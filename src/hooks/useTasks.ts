@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import type { Tarea } from "../Types/tarea";
 import { getTareas, saveTareas } from "../utils/localStorage";
+import type { Tarea, Prioridad } from "../Types/tarea";
+
 
 export function useTasks() {
   const [tareas, setTareas] = useState<Tarea[]>(getTareas);
@@ -13,6 +14,9 @@ export function useTasks() {
 
   const [nuevaTarea, setNuevaTarea] =
     useState("");
+
+   const [prioridad, setPrioridad] =
+  useState<Prioridad>("ninguna");
 
   const [filtro, setFiltro] = useState<
     "todas" | "pendientes" | "completadas"
@@ -36,6 +40,22 @@ const tareasDelDia = tareas.filter(
   (t) => t.fecha === fechaSeleccionada
 );
 
+const getEstadoDia = (fecha: string) => {
+  const tareasDelDia = tareas.filter(
+    (t) => t.fecha === fecha
+  );
+
+  if (tareasDelDia.length === 0) return null;
+
+  const todasHechas = tareasDelDia.every(
+    (t) => t.completada
+  );
+
+  return todasHechas ? "verde" : "amarillo";
+};
+
+
+
   function agregarTarea() {
   if (nuevaTarea.trim() === "") return;
 
@@ -47,10 +67,12 @@ const tareasDelDia = tareas.filter(
       completada: false,
       // fecha: new Date().toISOString().split("T")[0], // 👈 hoy
       fecha: fechaSeleccionada,
+       prioridad,
     },
   ]);
 
   setNuevaTarea("");
+  setPrioridad("media");
 }
 
 function eliminarTarea(id: number) {
@@ -96,12 +118,13 @@ useEffect(() => {
   saveTareas(tareas);
 }, [tareas]);
 
-const tareasFiltradas = tareas.filter((tarea) => {
+const tareasFiltradas = tareasDelDia.filter((tarea) => {
   if (filtro === "pendientes") return !tarea.completada;
   if (filtro === "completadas") return tarea.completada;
   return true;
 });
 
+console.log(tareas);
 return {
   tareas,
   nuevaTarea,
@@ -129,5 +152,11 @@ return {
   fechaSeleccionada,
   setFechaSeleccionada,
   tareasDelDia,
+
+prioridad,
+setPrioridad,
+
+getEstadoDia
+
 };
 }

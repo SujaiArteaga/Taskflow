@@ -1,15 +1,26 @@
-
+import type { Prioridad } from "../Types/tarea";
 
 type TaskFormProps = {
-nuevaTarea: string;
-setNuevaTarea: (value: string) => void;
-onAgregar: () => void;
+  nuevaTarea: string;
+  setNuevaTarea: (value: string) => void;
+
+  prioridad: "alta" | "media" | "baja" | "ninguna";
+
+  setPrioridad: (
+    value: "alta" | "media" | "baja" | "ninguna"
+  ) => void;
+
+  onAgregar: () => void;
 };
 
 function TaskForm({
-nuevaTarea,
-setNuevaTarea,
-onAgregar,
+  nuevaTarea,
+  setNuevaTarea,
+
+  prioridad,
+  setPrioridad,
+
+  onAgregar,
 }: TaskFormProps) {
 return (
 <div 
@@ -26,6 +37,9 @@ style={{
     border: "1px solid #ccc",
     outline: "none",
   }}
+
+id="nueva-tarea"
+name="nuevaTarea"  
 type="text"
 value={nuevaTarea}
 onChange={(e) =>
@@ -38,6 +52,20 @@ onAgregar();
 }}
 placeholder="Escribe una tarea"
 />
+
+<select
+  value={prioridad}
+  onChange={(e) =>
+    setPrioridad(
+      e.target.value as Prioridad
+    )
+  }
+>
+  <option value="ninguna">⚪ Ninguna</option>
+  <option value="baja">🟢 Baja</option>
+  <option value="media">🟡 Media</option>
+  <option value="alta">🔴 Alta</option>
+</select>
 
   <button 
   style={{

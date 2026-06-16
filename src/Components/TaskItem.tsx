@@ -32,7 +32,27 @@ function TaskItem({
   onCancelarEdicion,
 }: TaskItemProps) {
 return ( <li className="task-item"
+style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "10px",
+    marginBottom: "8px",
+    borderRadius: "8px",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    borderLeft: `6px solid ${
+      tarea.prioridad === "alta"
+        ? "#ef4444"
+        : tarea.prioridad === "media"
+        ? "#f59e0b"
+        : tarea.prioridad === "baja"
+        ? "#22c55e"
+        : "#d1d5db"
+    }`,
+  }}
 >
+tarea.prioridad
+
   <div className="task-left">
     <input
       type="checkbox"
@@ -43,6 +63,8 @@ return ( <li className="task-item"
     {tareaEditando === tarea.id ? (
       <>
         <input
+        id={`editar-${tarea.id}`}
+  name={`editar-${tarea.id}`}
           value={textoEditado}
           onChange={(e) =>
             setTextoEditado(e.target.value)

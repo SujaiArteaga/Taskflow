@@ -3,6 +3,7 @@ import TaskList from "../Components/TaskList";
 import TaskStats from "../Components/TaskStats";
 import { useTasksContext } from "../context/TasksContext";
 import DaySelector from "../Components/DaySelector";
+import type { Prioridad } from "../Types/tarea";
 
 export default function Home() {
   const {
@@ -32,6 +33,11 @@ export default function Home() {
     fechaSeleccionada,
   setFechaSeleccionada,
   tareasDelDia,
+
+  prioridad,
+setPrioridad,
+
+getEstadoDia
   } = useTasksContext();
 
 
@@ -39,10 +45,12 @@ export default function Home() {
   return (
     <div>
       <TaskForm
-        nuevaTarea={nuevaTarea}
-        setNuevaTarea={setNuevaTarea}
-        onAgregar={agregarTarea}
-      />
+  nuevaTarea={nuevaTarea}
+  setNuevaTarea={setNuevaTarea}
+  prioridad={prioridad}
+  setPrioridad={setPrioridad}
+  onAgregar={agregarTarea}
+/>
 
       {/* filtros */}
       <div>
@@ -57,11 +65,12 @@ export default function Home() {
         completadas={completadas}
       />
        <DaySelector
-  fechaSeleccionada={fechaSeleccionada}
-  setFechaSeleccionada={setFechaSeleccionada}
-        />
+       fechaSeleccionada={fechaSeleccionada}
+       setFechaSeleccionada={setFechaSeleccionada}
+       getEstadoDia={getEstadoDia}
+       />
       <TaskList
-        tareas={tareasDelDia}
+        tareas={tareasFiltradas}
         onToggle={toggleTarea}
         onDelete={eliminarTarea}
         tareaEditando={tareaEditando}
